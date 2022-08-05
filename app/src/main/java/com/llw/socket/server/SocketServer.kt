@@ -1,36 +1,43 @@
 package com.llw.socket.server
 
 import android.util.Log
-import com.llw.socket.client.SocketClient
-import java.io.*
+import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
 import java.net.ServerSocket
 import java.net.Socket
-import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.math.log
 
+/**
+ * Socket服务端
+ */
 object SocketServer {
 
     private val TAG = SocketServer::class.java.simpleName
 
     private const val SOCKET_PORT = 9527
 
-    private lateinit var socket: Socket
-
-    var result = true
+    private var socket: Socket? = null
+    private var serverSocket: ServerSocket? = null
 
     private lateinit var mCallback: ServerCallback
 
+    private lateinit var outputStream: OutputStream
+
+    var result = true
+    /**
+     * 开启服务
+     */
     fun startServer(callback: ServerCallback): Boolean {
         mCallback = callback
         Thread {
             try {
-                //创建一个ServerSocket，用于监听客户端Socket的连接请求
-                val serverSocket = ServerSocket(SOCKET_PORT)
+                serverSocket = ServerSocket(SOCKET_PORT)
                 while (result) {
-                    //每当接收到客户端的Socket请求，服务器端也相应的创建一个Socket
-                    socket = serverSocket.accept()
-                    mCallback.otherMsg("${socket.inetAddress} to connected")
-                    ServerThread(socket, mCallback).start()
+                    socket = serverSocket?.accept()
+                    mCallback.otherMsg("${socket?.inetAddress} to connected")
+                    ServerThread(socket!!, mCallback).start()
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -40,29 +47,31 @@ object SocketServer {
         return result
     }
 
+    /**
+     * 关闭服务
+     */
     fun stopServer() {
-        socket.shutdownInput()
-        socket.shutdownOutput()
-        socket.close()
+        socket?.apply {
+            shutdownInput()
+            shutdownOutput()
+            close()
+        }
+        serverSocket?.close()
     }
-
-    private lateinit var outputStream: OutputStream
 
     /**
      * 发送到客户端
      */
     fun sendToClient(msg: String) {
         Thread {
-            var message = msg
-            if (socket.isClosed) {
+            if (socket!!.isClosed) {
                 Log.e(TAG, "sendToClient: Socket is closed")
                 return@Thread
             }
-            outputStream = socket.getOutputStream()
+            outputStream = socket!!.getOutputStream()
             try {
-                val me = message.toByteArray()  //基本输出流只能输出字符数组，如果要直接输出字符串要使用OutputStreamWriter
-                outputStream.write(me)
-                outputStream.flush()    //输出完记得刷新一下
+                outputStream.write(msg.toByteArray())
+                outputStream.flush()
                 mCallback.otherMsg("toClient: $msg")
                 Log.d(TAG, "发送到客户端成功")
             } catch (e: IOException) {

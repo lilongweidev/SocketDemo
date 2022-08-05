@@ -6,15 +6,17 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.llw.socket.client.ClientCallback
 import com.llw.socket.client.SocketClient
 import com.llw.socket.databinding.ActivityMainBinding
 import com.llw.socket.server.ServerCallback
 import com.llw.socket.server.SocketServer
 
-open class MainActivity : AppCompatActivity(), ServerCallback, ClientCallback {
+class MainActivity : AppCompatActivity(), ServerCallback, ClientCallback {
 
     private val TAG = MainActivity::class.java.simpleName
+
     private lateinit var binding: ActivityMainBinding
 
     private val buffer = StringBuffer()
@@ -28,6 +30,11 @@ open class MainActivity : AppCompatActivity(), ServerCallback, ClientCallback {
     //Socket服务是否连接
     private var connectSocket = false
 
+    //消息列表
+    private val messages = ArrayList<Message>()
+
+    private lateinit var msgAdapter: MsgAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -38,6 +45,7 @@ open class MainActivity : AppCompatActivity(), ServerCallback, ClientCallback {
 
     private fun initView() {
         binding.tvIpAddress.text = "Ip地址：${getIp()}"
+        //服务端和客户端切换
         binding.rg.setOnCheckedChangeListener { _, checkedId ->
             isServer = when (checkedId) {
                 R.id.rb_server -> true
@@ -78,8 +86,20 @@ open class MainActivity : AppCompatActivity(), ServerCallback, ClientCallback {
             if (msg.isEmpty()) {
                 showMsg("请输入要发送的信息");return@setOnClickListener
             }
+            //检查是否能发送消息
+            val isSend = if (openSocket) { openSocket} else if (connectSocket) { connectSocket } else { false }
+            if (!isSend) {
+                showMsg("当前未开启服务或连接服务");return@setOnClickListener
+            }
             if (isServer) SocketServer.sendToClient(msg) else SocketClient.sendToServer(msg)
+            binding.etMsg.setText("")
+            updateList(if (isServer) 1 else 2, msg)
         }
+
+        //初始化列表
+        msgAdapter = MsgAdapter(messages)
+        binding.rvMsg.layoutManager = LinearLayoutManager(this)
+        binding.rvMsg.adapter = msgAdapter
     }
 
     private fun showInfo(info: String) {
@@ -97,10 +117,8 @@ open class MainActivity : AppCompatActivity(), ServerCallback, ClientCallback {
      * 接收到客户端发的消息
      */
     override fun receiveClientMsg(success: Boolean, msg: String) {
-        Log.d(TAG, "receiveClientMsg: $msg")
-        if (success) {
-            showInfo("ClientMsg: $msg")
-        }
+        showInfo("ClientMsg: $msg")
+        updateList(2, msg)
     }
 
     override fun otherMsg(msg: String) {
@@ -111,8 +129,13 @@ open class MainActivity : AppCompatActivity(), ServerCallback, ClientCallback {
      * 接收到服务端发的消息
      */
     override fun receiveServerMsg(msg: String) {
-        Log.d(TAG, "receiveServerMsg: $msg")
         showInfo("ServerMsg: $msg")
+        updateList(1, msg)
+    }
+
+    private fun updateList(type: Int, msg: String) {
+        messages.add(Message(type, msg))
+        runOnUiThread { msgAdapter.notifyItemChanged(if (messages.size == 0) 0 else messages.size - 1) }
     }
 
     private fun showMsg(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()

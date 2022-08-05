@@ -77,9 +77,9 @@
                 android:id="@+id/et_ip_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:digits="0123456789."
                 android:hint="连接Ip地址"
-                android:text="192.168.0.120"
-                android:inputType="text"
+                android:inputType="number"
                 android:lines="1"
                 android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -99,10 +99,15 @@
     <TextView
         android:id="@+id/tv_info"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:padding="16dp"
         android:text="信息" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_msg"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -114,13 +119,13 @@
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_msg"
             android:layout_width="0dp"
-            android:gravity="center_vertical"
             android:layout_height="40dp"
-            android:hint="发送给客户端"
-            android:textSize="14sp"
             android:layout_weight="1"
             android:background="@drawable/shape_et_bg"
-            android:padding="10dp" />
+            android:gravity="center_vertical"
+            android:hint="发送给客户端"
+            android:padding="10dp"
+            android:textSize="14sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_send_msg"

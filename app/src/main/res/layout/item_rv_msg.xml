@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black"
+    android:orientation="horizontal"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_server"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/icon_server"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/circleImageStyle" />
+
+    <TextView
+        android:id="@+id/tv_server_msg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_weight="1"
+        android:background="@drawable/shape_left_msg_bg"
+        android:text="123"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/iv_server"
+        app:layout_constraintTop_toTopOf="@+id/iv_server" />
+
+    <TextView
+        android:id="@+id/tv_client_msg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_weight="1"
+        android:background="@drawable/shape_right_msg_bg"
+        android:text="123"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/iv_client"
+        app:layout_constraintTop_toTopOf="@+id/iv_client" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_client"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/icon_client"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/circleImageStyle" />
+</androidx.constraintlayout.widget.ConstraintLayout>

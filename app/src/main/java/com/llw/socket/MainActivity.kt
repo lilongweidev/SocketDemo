@@ -1,5 +1,6 @@
 package com.llw.socket
 
+import android.content.Intent
 import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.util.Log
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity(), ServerCallback, ClientCallback {
 
     //消息列表
     private val messages = ArrayList<Message>()
-
+    //消息适配器
     private lateinit var msgAdapter: MsgAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +63,7 @@ class MainActivity : AppCompatActivity(), ServerCallback, ClientCallback {
                 SocketServer.stopServer();false
             } else SocketServer.startServer(this)
             //显示日志
-            showInfo(if (openSocket) "开启服务" else "关闭服务")
+            showMsg(if (openSocket) "开启服务" else "关闭服务")
             //改变按钮文字
             binding.btnStartService.text = if (openSocket) "关闭服务" else "开启服务"
         }
@@ -77,17 +78,17 @@ class MainActivity : AppCompatActivity(), ServerCallback, ClientCallback {
             } else {
                 SocketClient.connectServer(ip, this);true
             }
-            showInfo(if (connectSocket) "连接服务" else "关闭连接")
+            showMsg(if (connectSocket) "连接服务" else "关闭连接")
             binding.btnConnectService.text = if (connectSocket) "关闭连接" else "连接服务"
         }
         //发送消息 给 服务端/客户端
         binding.btnSendMsg.setOnClickListener {
-            val msg = binding.etMsg.text.toString()
+            val msg = binding.etMsg.text.toString().trim()
             if (msg.isEmpty()) {
                 showMsg("请输入要发送的信息");return@setOnClickListener
             }
             //检查是否能发送消息
-            val isSend = if (openSocket) { openSocket} else if (connectSocket) { connectSocket } else { false }
+            val isSend = if (openSocket) openSocket  else if (connectSocket) connectSocket  else false
             if (!isSend) {
                 showMsg("当前未开启服务或连接服务");return@setOnClickListener
             }
@@ -95,16 +96,12 @@ class MainActivity : AppCompatActivity(), ServerCallback, ClientCallback {
             binding.etMsg.setText("")
             updateList(if (isServer) 1 else 2, msg)
         }
-
         //初始化列表
         msgAdapter = MsgAdapter(messages)
-        binding.rvMsg.layoutManager = LinearLayoutManager(this)
-        binding.rvMsg.adapter = msgAdapter
-    }
-
-    private fun showInfo(info: String) {
-        buffer.append(info).append("\n")
-        binding.tvInfo.text = buffer.toString()
+        binding.rvMsg.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = msgAdapter
+        }
     }
 
     private fun getIp() =
@@ -116,26 +113,29 @@ class MainActivity : AppCompatActivity(), ServerCallback, ClientCallback {
     /**
      * 接收到客户端发的消息
      */
-    override fun receiveClientMsg(success: Boolean, msg: String) {
-        showInfo("ClientMsg: $msg")
-        updateList(2, msg)
-    }
-
-    override fun otherMsg(msg: String) {
-        showInfo(msg)
-    }
+    override fun receiveClientMsg(success: Boolean, msg: String) = updateList(2, msg)
 
     /**
      * 接收到服务端发的消息
      */
-    override fun receiveServerMsg(msg: String) {
-        showInfo("ServerMsg: $msg")
-        updateList(1, msg)
+    override fun receiveServerMsg(msg: String) = updateList(1, msg)
+
+
+    override fun otherMsg(msg: String) {
+        Log.d(TAG, msg)
     }
 
+    /**
+     * 更新列表
+     */
     private fun updateList(type: Int, msg: String) {
         messages.add(Message(type, msg))
-        runOnUiThread { msgAdapter.notifyItemChanged(if (messages.size == 0) 0 else messages.size - 1) }
+        runOnUiThread {
+            (if (messages.size == 0) 0 else messages.size - 1).apply {
+                msgAdapter.notifyItemChanged(this)
+                binding.rvMsg.smoothScrollToPosition(this)
+            }
+        }
     }
 
     private fun showMsg(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()

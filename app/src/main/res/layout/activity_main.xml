@@ -96,13 +96,6 @@
             app:layout_constraintTop_toBottomOf="@+id/btn_start_service" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="信息" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_msg"
         android:layout_width="match_parent"

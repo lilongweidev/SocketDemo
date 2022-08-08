@@ -1,23 +1,17 @@
 package com.llw.socket
 
-import android.content.Context
-import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 import com.llw.socket.databinding.ItemRvMsgBinding
 
 class MsgAdapter(private val messages: ArrayList<Message>) :
     RecyclerView.Adapter<MsgAdapter.ViewHolder>() {
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ViewHolder(ItemRvMsgBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ItemRvMsgBinding.inflate(LayoutInflater.from(parent.context)))
-    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val message = messages[position]

@@ -6,6 +6,7 @@ import java.io.InputStream
 import java.io.InputStreamReader
 import java.io.OutputStream
 import java.net.Socket
+import java.util.concurrent.Executors
 
 /**
  * Socket客户端
@@ -24,12 +25,15 @@ object SocketClient {
 
     private const val SOCKET_PORT = 9527
 
+    // 服务端线程池
+    val clientThreadPool = Executors.newSingleThreadExecutor()
+
     /**
      * 连接服务
      */
     fun connectServer(ipAddress: String, callback: ClientCallback) {
         mCallback = callback
-        Thread {
+        Thread{
             try {
                 socket = Socket(ipAddress, SOCKET_PORT)
                 ClientThread(socket!!, mCallback).start()
@@ -45,11 +49,7 @@ object SocketClient {
     fun closeConnect() {
         inputStreamReader?.close()
         outputStream?.close()
-        socket?.apply {
-            shutdownInput()
-            shutdownOutput()
-            close()
-        }
+        socket?.close()
         Log.d(TAG, "关闭连接")
     }
 
@@ -58,10 +58,10 @@ object SocketClient {
      * @param msg 要发送至服务器的字符串
      */
     fun sendToServer(msg: String) {
-        Thread {
+        clientThreadPool.execute {
             if (socket!!.isClosed) {
                 Log.e(TAG, "sendToServer: Socket is closed")
-                return@Thread
+                return@execute
             }
             outputStream = socket?.getOutputStream()
             try {
@@ -72,7 +72,7 @@ object SocketClient {
                 e.printStackTrace()
                 Log.e(TAG, "向服务端发送消息失败")
             }
-        }.start()
+        }
     }
 
     class ClientThread(private val socket: Socket, private val callback: ClientCallback) : Thread() {

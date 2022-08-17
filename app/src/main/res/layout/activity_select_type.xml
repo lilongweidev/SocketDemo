@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.SelectTypeActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/purple_500"
+        app:title="选择类型"
+        app:titleTextColor="@color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_server"
+            android:layout_width="240dp"
+            android:layout_height="120dp"
+            android:layout_marginBottom="20dp"
+            android:text="服务端"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btn_client"
+            android:layout_width="240dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="20dp"
+            android:text="客户端"
+            android:textSize="18sp" />
+    </LinearLayout>
+</LinearLayout>

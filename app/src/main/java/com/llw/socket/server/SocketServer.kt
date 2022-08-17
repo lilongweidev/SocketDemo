@@ -7,7 +7,6 @@ import java.io.OutputStream
 import java.net.ServerSocket
 import java.net.Socket
 import java.util.concurrent.Executors
-import kotlin.math.log
 
 /**
  * Socket服务端
@@ -26,12 +25,16 @@ object SocketServer {
     private lateinit var outputStream: OutputStream
 
     var result = true
+
+    // 服务端线程池
+    val serverThreadPool = Executors.newSingleThreadExecutor()
+
     /**
      * 开启服务
      */
     fun startServer(callback: ServerCallback): Boolean {
         mCallback = callback
-        Thread {
+        Thread{
             try {
                 serverSocket = ServerSocket(SOCKET_PORT)
                 while (result) {
@@ -63,10 +66,10 @@ object SocketServer {
      * 发送到客户端
      */
     fun sendToClient(msg: String) {
-        Thread {
+        serverThreadPool.execute {
             if (socket!!.isClosed) {
                 Log.e(TAG, "sendToClient: Socket is closed")
-                return@Thread
+                return@execute
             }
             outputStream = socket!!.getOutputStream()
             try {
@@ -78,7 +81,7 @@ object SocketServer {
                 e.printStackTrace()
                 Log.e(TAG, "向客户端发送消息失败")
             }
-        }.start()
+        }
     }
 
     class ServerThread(private val socket: Socket, private val callback: ServerCallback) :

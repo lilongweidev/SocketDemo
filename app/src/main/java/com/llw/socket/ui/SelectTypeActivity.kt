@@ -1,6 +1,7 @@
 package com.llw.socket.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import com.llw.socket.R
 

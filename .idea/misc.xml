@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/drawable/ic_back_black.xml" value="0.1045" />
+        <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/drawable/ic_emoji.xml" value="0.131" />
+        <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/drawable/ic_launcher_background.xml" value="0.128" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/drawable/shape_dialog_bg.xml" value="0.1" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/drawable/shape_et_bg.xml" value="0.1425" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/drawable/shape_left_msg_bg.xml" value="0.1325" />
@@ -12,7 +14,9 @@
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/activity_select_type.xml" value="0.14666666666666667" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/activity_server.xml" value="0.22" />
+        <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/dialog.xml" value="0.13994565217391305" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/dialog_edit_ip.xml" value="0.22" />
+        <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/item_emoji.xml" value="0.13405797101449277" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/item_rv_msg.xml" value="0.3333333333333333" />
       </map>
     </option>

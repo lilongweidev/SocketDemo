@@ -4,16 +4,17 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.llw.socket.Message
-import com.llw.socket.MsgAdapter
+import com.llw.socket.adapter.MsgAdapter
+import com.llw.socket.bean.Message
 import com.llw.socket.databinding.ActivityServerBinding
 import com.llw.socket.server.ServerCallback
 import com.llw.socket.server.SocketServer
 
+
 /**
  * 服务端页面
  */
-class ServerActivity : BaseActivity(), ServerCallback {
+class ServerActivity : BaseActivity(), ServerCallback, EmojiCallback {
 
     private val TAG = ServerActivity::class.java.simpleName
     private lateinit var binding: ActivityServerBinding
@@ -40,6 +41,13 @@ class ServerActivity : BaseActivity(), ServerCallback {
             subtitle = "IP：${getIp()}"
             setNavigationOnClickListener { onBackPressed() }
         }
+
+        //显示emoji
+        binding.ivEmoji.setOnClickListener {
+            //显示底部弹窗
+            showEmojiDialog(this,this)
+        }
+
         //开启服务/关闭服务 服务端处理
         binding.tvStartService.setOnClickListener {
             openSocket = if (openSocket) {
@@ -75,7 +83,7 @@ class ServerActivity : BaseActivity(), ServerCallback {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             android.R.id.home -> onBackPressed()
         }
         return super.onOptionsItemSelected(item)
@@ -101,5 +109,9 @@ class ServerActivity : BaseActivity(), ServerCallback {
                 binding.rvMsg.smoothScrollToPosition(this)
             }
         }
+    }
+
+    override fun checkedEmoji(charSequence: CharSequence) {
+        binding.etMsg.setText(charSequence)
     }
 }

@@ -1,9 +1,10 @@
-package com.llw.socket
+package com.llw.socket.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.llw.socket.bean.Message
 import com.llw.socket.databinding.ItemRvMsgBinding
 
 class MsgAdapter(private val messages: ArrayList<Message>) :

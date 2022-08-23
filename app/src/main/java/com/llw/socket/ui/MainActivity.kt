@@ -7,8 +7,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.llw.socket.Message
-import com.llw.socket.MsgAdapter
+import com.llw.socket.bean.Message
+import com.llw.socket.adapter.MsgAdapter
 import com.llw.socket.R
 import com.llw.socket.client.ClientCallback
 import com.llw.socket.client.SocketClient

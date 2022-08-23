@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.ClientActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -15,7 +15,8 @@
         app:navigationIcon="@drawable/ic_back_black"
         app:navigationIconTint="@color/white"
         app:title="客户端"
-        app:titleTextColor="@color/white" >
+        app:titleTextColor="@color/white">
+
         <TextView
             android:id="@+id/tv_connect_service"
             android:layout_width="wrap_content"
@@ -39,6 +40,13 @@
         android:gravity="center_vertical"
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
+
+        <ImageView
+            android:id="@+id/iv_emoji"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_emoji" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_msg"

@@ -3,11 +3,10 @@ package com.llw.socket.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.llw.socket.Message
-import com.llw.socket.MsgAdapter
+import com.llw.socket.adapter.MsgAdapter
+import com.llw.socket.bean.Message
 import com.llw.socket.client.ClientCallback
 import com.llw.socket.client.SocketClient
 import com.llw.socket.databinding.ActivityClientBinding
@@ -17,7 +16,7 @@ import com.llw.socket.databinding.DialogEditIpBinding
 /**
  * 客户端页面
  */
-class ClientActivity : BaseActivity(), ClientCallback {
+class ClientActivity : BaseActivity(), ClientCallback, EmojiCallback {
 
     private val TAG = BaseActivity::class.java.simpleName
     private lateinit var binding: ActivityClientBinding
@@ -40,6 +39,12 @@ class ClientActivity : BaseActivity(), ClientCallback {
 
     private fun initView() {
         binding.toolbar.setNavigationOnClickListener { onBackPressed() }
+
+        //显示emoji
+        binding.ivEmoji.setOnClickListener {
+            //显示底部弹窗
+            showEmojiDialog(this,this)
+        }
 
         //连接服务/断开连接 客户端处理
         binding.tvConnectService.setOnClickListener {
@@ -114,5 +119,9 @@ class ClientActivity : BaseActivity(), ClientCallback {
                 binding.rvMsg.smoothScrollToPosition(this)
             }
         }
+    }
+
+    override fun checkedEmoji(charSequence: CharSequence) {
+        binding.etMsg.setText(charSequence)
     }
 }

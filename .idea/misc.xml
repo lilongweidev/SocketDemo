@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android/AndroidProjects/SocketDemo/app/src/main/res/drawable/ic_emoji.xml" value="0.147" />
+        <entry key="..\:/Android/AndroidProjects/SocketDemo/app/src/main/res/layout/activity_server.xml" value="0.20416666666666666" />
+        <entry key="..\:/Android/AndroidProjects/SocketDemo/app/src/main/res/layout/dialog_emoji.xml" value="0.1" />
+        <entry key="..\:/Android/AndroidProjects/SocketDemo/app/src/main/res/layout/item_emoji.xml" value="0.1" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/drawable/ic_back_black.xml" value="0.1045" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/drawable/ic_emoji.xml" value="0.131" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/drawable/ic_launcher_background.xml" value="0.128" />

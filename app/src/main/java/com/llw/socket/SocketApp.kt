@@ -30,10 +30,11 @@ class SocketApp : Application() {
         instance = this
 
         initEmoji2()
-
-
     }
 
+    /**
+     * 初始化Emoji2
+     */
     private fun initEmoji2() = EmojiCompat.init(BundledEmojiCompatConfig(this).apply {
         setReplaceAll(true)
         registerInitCallback(object : InitCallback() {
@@ -41,14 +42,7 @@ class SocketApp : Application() {
                 //初始化成功回调
                 Log.d(TAG, "onInitialized")
                 //加载表情列表
-                val inputStream = assets.open("emoji.txt")
-                BufferedReader(InputStreamReader(inputStream)).use {
-                    var line: String
-                    while (true) {
-                        line = it.readLine() ?: break
-                        emojiList.add(line)
-                    }
-                }
+                loadEmoji()
             }
 
             override fun onFailed(@Nullable throwable: Throwable?) {
@@ -58,5 +52,17 @@ class SocketApp : Application() {
         })
     })
 
-
+    /**
+     * 加载表情列表
+     */
+    private fun loadEmoji() {
+        val inputStream = assets.open("emoji.txt")
+        BufferedReader(InputStreamReader(inputStream)).use {
+            var line: String
+            while (true) {
+                line = it.readLine() ?: break
+                emojiList.add(line)
+            }
+        }
+    }
 }

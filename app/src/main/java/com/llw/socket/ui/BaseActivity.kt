@@ -14,18 +14,31 @@ import com.llw.socket.databinding.DialogEmojiBinding
 
 open class BaseActivity: AppCompatActivity() {
 
+    /**
+     * 获取Ip地址
+     */
     protected fun getIp() =
         intToIp((applicationContext.getSystemService(WIFI_SERVICE) as WifiManager).connectionInfo.ipAddress)
 
+    /**
+     * Ip地址转换
+     */
     private fun intToIp(ip: Int) =
         "${(ip and 0xFF)}.${(ip shr 8 and 0xFF)}.${(ip shr 16 and 0xFF)}.${(ip shr 24 and 0xFF)}"
 
+    /**
+     * 显示Toast
+     */
     protected fun showMsg(msg: CharSequence?) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 
-
-
+    /**
+     * 跳转页面
+     */
     protected open fun jumpActivity(clazz: Class<*>?) = startActivity(Intent(this, clazz))
 
+    /**
+     * 显示Emoji弹窗
+     */
     protected fun showEmojiDialog(context: Context, callback: EmojiCallback) {
         val emojiBinding = DialogEmojiBinding.inflate(LayoutInflater.from(context), null, false)
         val dialog = BottomSheetDialog(this)

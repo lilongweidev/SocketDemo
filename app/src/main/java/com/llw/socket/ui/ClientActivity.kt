@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.llw.socket.R
 import com.llw.socket.adapter.MsgAdapter
 import com.llw.socket.bean.Message
 import com.llw.socket.client.ClientCallback
@@ -26,6 +27,7 @@ class ClientActivity : BaseActivity(), ClientCallback, EmojiCallback {
 
     //消息列表
     private val messages = ArrayList<Message>()
+
     //消息适配器
     private lateinit var msgAdapter: MsgAdapter
 
@@ -43,7 +45,7 @@ class ClientActivity : BaseActivity(), ClientCallback, EmojiCallback {
         //显示emoji
         binding.ivEmoji.setOnClickListener {
             //显示底部弹窗
-            showEmojiDialog(this,this)
+            showEmojiDialog(this, this)
         }
 
         //连接服务/断开连接 客户端处理
@@ -64,7 +66,7 @@ class ClientActivity : BaseActivity(), ClientCallback, EmojiCallback {
                 showMsg("请输入要发送的信息");return@setOnClickListener
             }
             //检查是否能发送消息
-            val isSend = if (connectSocket) connectSocket  else false
+            val isSend = if (connectSocket) connectSocket else false
             if (!isSend) {
                 showMsg("当前未开启服务或连接服务");return@setOnClickListener
             }
@@ -81,22 +83,25 @@ class ClientActivity : BaseActivity(), ClientCallback, EmojiCallback {
     }
 
     private fun showEditDialog() {
-        val dialogBinding = DialogEditIpBinding.inflate(LayoutInflater.from(this@ClientActivity),null,false)
-        val dialog = AlertDialog.Builder(this@ClientActivity).create()
-        dialog.show()
-        dialog.window!!.setContentView(dialogBinding.root)
-        dialogBinding.tvCancel.setOnClickListener { dialog.dismiss() }
-        dialogBinding.tvSure.setOnClickListener {
-            val ip = dialogBinding.etIpAddress.text.toString()
-            if (ip.isEmpty()) {
-                showMsg("请输入Ip地址");return@setOnClickListener
+        val dialogBinding =
+            DialogEditIpBinding.inflate(LayoutInflater.from(this@ClientActivity), null, false)
+        AlertDialog.Builder(this@ClientActivity).apply {
+            setIcon(R.drawable.ic_connect)
+            setTitle("连接Ip地址")
+            setView(dialogBinding.root)
+            setPositiveButton("确定") { dialog, _ ->
+                val ip = dialogBinding.etIpAddress.text.toString()
+                if (ip.isEmpty()) {
+                    showMsg("请输入Ip地址");return@setPositiveButton
+                }
+                connectSocket = true
+                SocketClient.connectServer(ip, this@ClientActivity)
+                showMsg("连接服务")
+                binding.tvConnectService.text = "关闭连接"
+                dialog.dismiss()
             }
-            connectSocket = true
-            SocketClient.connectServer(ip, this@ClientActivity)
-            showMsg("连接服务")
-            binding.tvConnectService.text = "关闭连接"
-            dialog.dismiss()
-        }
+            setNegativeButton("取消") { dialog, _ -> dialog.dismiss() }
+        }.show()
     }
 
     /**
@@ -122,6 +127,9 @@ class ClientActivity : BaseActivity(), ClientCallback, EmojiCallback {
     }
 
     override fun checkedEmoji(charSequence: CharSequence) {
-        binding.etMsg.setText(charSequence)
+        binding.etMsg.apply {
+            setText(text.toString() + charSequence)
+            setSelection(text.toString().length)//光标置于最后
+        }
     }
 }

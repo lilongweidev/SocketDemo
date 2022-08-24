@@ -112,6 +112,9 @@ class ServerActivity : BaseActivity(), ServerCallback, EmojiCallback {
     }
 
     override fun checkedEmoji(charSequence: CharSequence) {
-        binding.etMsg.setText(charSequence)
+        binding.etMsg.apply {
+            setText(text.toString() + charSequence)
+            setSelection(text.toString().length)//光标置于最后
+        }
     }
 }

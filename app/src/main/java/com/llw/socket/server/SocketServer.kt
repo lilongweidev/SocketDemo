@@ -1,11 +1,13 @@
 package com.llw.socket.server
 
 import android.util.Log
+import com.llw.socket.client.SocketClient
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.net.ServerSocket
 import java.net.Socket
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 /**
@@ -27,7 +29,7 @@ object SocketServer {
     var result = true
 
     // 服务端线程池
-    val serverThreadPool = Executors.newSingleThreadExecutor()
+    private var serverThreadPool: ExecutorService? = null
 
     /**
      * 开启服务
@@ -60,26 +62,35 @@ object SocketServer {
             close()
         }
         serverSocket?.close()
+
+        //关闭线程池
+        serverThreadPool?.shutdownNow()
+        serverThreadPool = null
     }
 
     /**
      * 发送到客户端
      */
     fun sendToClient(msg: String) {
-        serverThreadPool.execute {
+        if (serverThreadPool == null) {
+            serverThreadPool = Executors.newCachedThreadPool()
+        }
+        serverThreadPool?.execute {
+            if (socket == null) {
+                mCallback.otherMsg("客户端还未连接")
+                return@execute
+            }
             if (socket!!.isClosed) {
-                Log.e(TAG, "sendToClient: Socket is closed")
+                mCallback.otherMsg("Socket已关闭")
                 return@execute
             }
             outputStream = socket!!.getOutputStream()
             try {
                 outputStream.write(msg.toByteArray())
                 outputStream.flush()
-                mCallback.otherMsg("toClient: $msg")
-                Log.d(TAG, "发送到客户端成功")
             } catch (e: IOException) {
                 e.printStackTrace()
-                Log.e(TAG, "向客户端发送消息失败")
+                mCallback.otherMsg("向客户端发送消息: $msg 失败")
             }
         }
     }

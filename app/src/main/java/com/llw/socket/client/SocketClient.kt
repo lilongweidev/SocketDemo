@@ -1,11 +1,13 @@
 package com.llw.socket.client
 
 import android.util.Log
+import com.llw.socket.server.SocketServer
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.io.OutputStream
 import java.net.Socket
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 /**
@@ -25,8 +27,8 @@ object SocketClient {
 
     private const val SOCKET_PORT = 9527
 
-    // 服务端线程池
-    val clientThreadPool = Executors.newSingleThreadExecutor()
+    // 客户端线程池
+    private var clientThreadPool: ExecutorService? = null
 
     /**
      * 连接服务
@@ -50,7 +52,9 @@ object SocketClient {
         inputStreamReader?.close()
         outputStream?.close()
         socket?.close()
-        Log.d(TAG, "关闭连接")
+        //关闭线程池
+        clientThreadPool?.shutdownNow()
+        clientThreadPool = null
     }
 
     /**
@@ -58,19 +62,25 @@ object SocketClient {
      * @param msg 要发送至服务器的字符串
      */
     fun sendToServer(msg: String) {
-        clientThreadPool.execute {
+        if (clientThreadPool == null) {
+            clientThreadPool = Executors.newSingleThreadExecutor()
+        }
+        clientThreadPool?.execute {
+            if (socket == null) {
+                mCallback.otherMsg("客户端还未连接")
+                return@execute
+            }
             if (socket!!.isClosed) {
-                Log.e(TAG, "sendToServer: Socket is closed")
+                mCallback.otherMsg("Socket已关闭")
                 return@execute
             }
             outputStream = socket?.getOutputStream()
             try {
                 outputStream?.write(msg.toByteArray())
                 outputStream?.flush()
-                mCallback.otherMsg("toServer: $msg")
             } catch (e: IOException) {
                 e.printStackTrace()
-                Log.e(TAG, "向服务端发送消息失败")
+                mCallback.otherMsg("向服务端发送消息: $msg 失败")
             }
         }
     }

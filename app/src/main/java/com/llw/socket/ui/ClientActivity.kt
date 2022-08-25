@@ -109,9 +109,7 @@ class ClientActivity : BaseActivity(), ClientCallback, EmojiCallback {
      */
     override fun receiveServerMsg(msg: String) = updateList(1, msg)
 
-    override fun otherMsg(msg: String) {
-        Log.d(TAG, msg)
-    }
+    override fun otherMsg(msg: String) = showMsg(msg)
 
     /**
      * 更新列表

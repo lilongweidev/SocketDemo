@@ -3,7 +3,14 @@ package com.llw.socket.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.llw.socket.R
+import com.llw.socket.SocketApp
+import com.llw.socket.adapter.EmojiAdapter
 import com.llw.socket.adapter.MsgAdapter
 import com.llw.socket.bean.Message
 import com.llw.socket.databinding.ActivityServerBinding
@@ -28,6 +35,12 @@ class ServerActivity : BaseActivity(), ServerCallback, EmojiCallback {
     //消息适配器
     private lateinit var msgAdapter: MsgAdapter
 
+    //是否显示表情
+    private var isShowEmoji = false
+
+    //
+    private var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityServerBinding.inflate(layoutInflater)
@@ -41,11 +54,19 @@ class ServerActivity : BaseActivity(), ServerCallback, EmojiCallback {
             subtitle = "IP：${getIp()}"
             setNavigationOnClickListener { onBackPressed() }
         }
-
+        //初始化BottomSheet
+        initBottomSheet()
         //显示emoji
-        binding.ivEmoji.setOnClickListener {
-            //显示底部弹窗
-            showEmojiDialog(this,this)
+        binding.layBottomSheetEdit.ivEmoji.setOnClickListener {
+            if (isShowEmoji) {
+                isShowEmoji = false
+                bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_COLLAPSED
+                binding.layBottomSheetEdit.ivEmoji.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_emoji))
+            } else {
+                isShowEmoji = true
+                bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_EXPANDED
+                binding.layBottomSheetEdit.ivEmoji.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_emoji_checked))
+            }
         }
 
         //开启服务/关闭服务 服务端处理
@@ -60,8 +81,8 @@ class ServerActivity : BaseActivity(), ServerCallback, EmojiCallback {
         }
 
         //发送消息给客户端
-        binding.btnSendMsg.setOnClickListener {
-            val msg = binding.etMsg.text.toString().trim()
+        binding.layBottomSheetEdit.btnSendMsg.setOnClickListener {
+            val msg = binding.layBottomSheetEdit.etMsg.text.toString().trim()
             if (msg.isEmpty()) {
                 showMsg("请输入要发送的信息");return@setOnClickListener
             }
@@ -71,7 +92,7 @@ class ServerActivity : BaseActivity(), ServerCallback, EmojiCallback {
                 showMsg("当前未开启服务或连接服务");return@setOnClickListener
             }
             SocketServer.sendToClient(msg)
-            binding.etMsg.setText("")
+            binding.layBottomSheetEdit.etMsg.setText("")
             updateList(1, msg)
         }
         //初始化列表
@@ -79,6 +100,27 @@ class ServerActivity : BaseActivity(), ServerCallback, EmojiCallback {
         binding.rvMsg.apply {
             layoutManager = LinearLayoutManager(this@ServerActivity)
             adapter = msgAdapter
+        }
+    }
+
+    private fun initBottomSheet() {
+        //Emoji布局
+        bottomSheetBehavior =
+            BottomSheetBehavior.from(binding.layBottomSheetEdit.bottomSheet).apply {
+                state = BottomSheetBehavior.STATE_HIDDEN
+                isHideable = false
+                isDraggable = false
+            }
+        binding.layBottomSheetEdit.rvEmoji.apply {
+            layoutManager = GridLayoutManager(context, 6)
+            adapter = EmojiAdapter(SocketApp.instance().emojiList).apply {
+                setOnItemClickListener(object : EmojiAdapter.OnClickListener {
+                    override fun onItemClick(position: Int) {
+                        val charSequence = SocketApp.instance().emojiList[position]
+                        checkedEmoji(charSequence)
+                    }
+                })
+            }
         }
     }
 
@@ -94,9 +136,7 @@ class ServerActivity : BaseActivity(), ServerCallback, EmojiCallback {
      */
     override fun receiveClientMsg(success: Boolean, msg: String) = updateList(2, msg)
 
-    override fun otherMsg(msg: String) {
-        Log.d(TAG, msg)
-    }
+    override fun otherMsg(msg: String) = showMsg(msg)
 
     /**
      * 更新列表
@@ -112,7 +152,7 @@ class ServerActivity : BaseActivity(), ServerCallback, EmojiCallback {
     }
 
     override fun checkedEmoji(charSequence: CharSequence) {
-        binding.etMsg.apply {
+        binding.layBottomSheetEdit.etMsg.apply {
             setText(text.toString() + charSequence)
             setSelection(text.toString().length)//光标置于最后
         }

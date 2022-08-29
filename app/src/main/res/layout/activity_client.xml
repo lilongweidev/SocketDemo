@@ -1,71 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@color/bg_color"
     tools:context=".ui.ClientActivity">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/purple_500"
-        app:navigationIcon="@drawable/ic_back_black"
-        app:navigationIconTint="@color/white"
-        app:title="客户端"
-        app:titleTextColor="@color/white">
-
-        <TextView
-            android:id="@+id/tv_connect_service"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="16dp"
-            android:text="连接服务"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
-    </com.google.android.material.appbar.MaterialToolbar>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_msg"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
     <LinearLayout
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/iv_emoji"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_emoji" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/purple_500"
+            app:navigationIcon="@drawable/ic_back_black"
+            app:navigationIconTint="@color/white"
+            app:title="客户端"
+            app:titleTextColor="@color/white">
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/et_msg"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_et_bg"
-            android:gravity="center_vertical"
-            android:hint="发送给服务端"
-            android:padding="10dp"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/tv_connect_service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:padding="16dp"
+                android:text="连接服务"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </com.google.android.material.appbar.MaterialToolbar>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_send_msg"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="发送"
-            app:cornerRadius="8dp" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_msg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
-</LinearLayout>
+    <include
+        android:id="@+id/lay_bottom_sheet_edit"
+        layout="@layout/bottom_sheet_edit" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

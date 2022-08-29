@@ -3,6 +3,7 @@ package com.llw.socket.ui
 import android.content.Context
 import android.content.Intent
 import android.net.wifi.WifiManager
+import android.os.Looper
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -29,7 +30,8 @@ open class BaseActivity: AppCompatActivity() {
     /**
      * 显示Toast
      */
-    protected fun showMsg(msg: CharSequence?) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+    protected fun showMsg(msg: CharSequence?) =
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 
     /**
      * 跳转页面

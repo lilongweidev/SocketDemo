@@ -5,11 +5,9 @@ import android.app.Application
 import android.util.Log
 import androidx.annotation.Nullable
 import androidx.emoji2.bundled.BundledEmojiCompatConfig
-import androidx.emoji2.text.DefaultEmojiCompatConfig
 import androidx.emoji2.text.EmojiCompat
 import androidx.emoji2.text.EmojiCompat.InitCallback
 import java.io.BufferedReader
-import java.io.File
 import java.io.InputStreamReader
 import kotlin.properties.Delegates
 

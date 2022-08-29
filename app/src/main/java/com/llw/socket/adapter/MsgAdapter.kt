@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.llw.socket.bean.Message
 import com.llw.socket.databinding.ItemRvMsgBinding
 
+/**
+ * 消息适配器
+ */
 class MsgAdapter(private val messages: ArrayList<Message>) :
     RecyclerView.Adapter<MsgAdapter.ViewHolder>() {
 

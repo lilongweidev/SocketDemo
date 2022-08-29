@@ -1,8 +1,10 @@
 package com.llw.socket.ui
 
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -38,7 +40,6 @@ class ServerActivity : BaseActivity(), ServerCallback, EmojiCallback {
     //是否显示表情
     private var isShowEmoji = false
 
-    //
     private var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,18 +57,6 @@ class ServerActivity : BaseActivity(), ServerCallback, EmojiCallback {
         }
         //初始化BottomSheet
         initBottomSheet()
-        //显示emoji
-        binding.layBottomSheetEdit.ivEmoji.setOnClickListener {
-            if (isShowEmoji) {
-                isShowEmoji = false
-                bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_COLLAPSED
-                binding.layBottomSheetEdit.ivEmoji.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_emoji))
-            } else {
-                isShowEmoji = true
-                bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_EXPANDED
-                binding.layBottomSheetEdit.ivEmoji.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_emoji_checked))
-            }
-        }
 
         //开启服务/关闭服务 服务端处理
         binding.tvStartService.setOnClickListener {
@@ -111,6 +100,7 @@ class ServerActivity : BaseActivity(), ServerCallback, EmojiCallback {
                 isHideable = false
                 isDraggable = false
             }
+        //表情列表适配器
         binding.layBottomSheetEdit.rvEmoji.apply {
             layoutManager = GridLayoutManager(context, 6)
             adapter = EmojiAdapter(SocketApp.instance().emojiList).apply {
@@ -122,6 +112,43 @@ class ServerActivity : BaseActivity(), ServerCallback, EmojiCallback {
                 })
             }
         }
+        //显示emoji
+        binding.layBottomSheetEdit.ivEmoji.setOnClickListener {
+            bottomSheetBehavior!!.state =
+                if (isShowEmoji) BottomSheetBehavior.STATE_COLLAPSED else BottomSheetBehavior.STATE_EXPANDED
+        }
+        //BottomSheet显示隐藏的相关处理
+        bottomSheetBehavior!!.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_EXPANDED -> {//显示
+                        isShowEmoji = true
+                        binding.layBottomSheetEdit.ivEmoji.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                this@ServerActivity,
+                                R.drawable.ic_emoji_checked
+                            )
+                        )
+                    }
+                    BottomSheetBehavior.STATE_COLLAPSED -> {//隐藏
+                        isShowEmoji = false
+                        binding.layBottomSheetEdit.ivEmoji.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                this@ServerActivity,
+                                R.drawable.ic_emoji
+                            )
+                        )
+                    }
+                    else -> isShowEmoji = false
+                }
+                Log.e(TAG, "onStateChanged: $newState")
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
+            }
+
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -136,7 +163,9 @@ class ServerActivity : BaseActivity(), ServerCallback, EmojiCallback {
      */
     override fun receiveClientMsg(success: Boolean, msg: String) = updateList(2, msg)
 
-    override fun otherMsg(msg: String) = showMsg(msg)
+    override fun otherMsg(msg: String) {
+        Log.d(TAG, "otherMsg: $msg")
+    }
 
     /**
      * 更新列表

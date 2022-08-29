@@ -2,16 +2,15 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/server_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F8F8"
-    android:orientation="vertical"
+    android:background="@color/bg_color"
     tools:context=".ui.ServerActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
         android:orientation="vertical">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -30,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginEnd="16dp"
+                android:padding="16dp"
                 android:text="开启服务"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
@@ -39,11 +38,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_msg"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
     </LinearLayout>
 
-    <!-- include bottom sheet -->
     <include
         android:id="@+id/lay_bottom_sheet_edit"
         layout="@layout/bottom_sheet_edit" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

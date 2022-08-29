@@ -48,6 +48,7 @@
     <!--底部弹出的内容-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_emoji"
+        android:overScrollMode="never"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

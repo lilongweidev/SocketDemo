@@ -11,11 +11,11 @@ class SelectTypeActivity : BaseActivity() {
         setContentView(R.layout.activity_select_type)
 
         findViewById<Button>(R.id.btn_server).setOnClickListener {
-            jumpActivity(ServerActivity::class.java)
+            jumpActivity(ServerPlusActivity::class.java)
         }
 
         findViewById<Button>(R.id.btn_client).setOnClickListener {
-            jumpActivity(ClientActivity::class.java)
+            jumpActivity(ClientPlusActivity::class.java)
         }
     }
 }

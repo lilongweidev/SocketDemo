@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
-    tools:context=".ui.ServerActivity">
+    tools:context=".ui.BaseSocketActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,16 +21,16 @@
             app:navigationIcon="@drawable/ic_back_black"
             app:navigationIconTint="@color/white"
             app:subtitleTextColor="@color/white"
-            app:title="服务端"
+            app:title="通用页面"
             app:titleTextColor="@color/white">
 
             <TextView
-                android:id="@+id/tv_start_service"
+                android:id="@+id/tv_func"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:padding="16dp"
-                android:text="开启服务"
+                android:text="功能按钮"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
         </com.google.android.material.appbar.MaterialToolbar>

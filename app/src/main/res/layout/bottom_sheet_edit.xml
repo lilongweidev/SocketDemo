@@ -15,8 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_emoji"
@@ -36,20 +36,30 @@
             android:padding="10dp"
             android:textSize="14sp" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_more"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:visibility="gone"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_more" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_send_msg"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
             android:layout_marginStart="8dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
             android:text="发送"
-            app:cornerRadius="8dp" />
+            android:textSize="12sp" />
     </LinearLayout>
 
     <!--底部弹出的内容-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_emoji"
-        android:overScrollMode="never"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:overScrollMode="never" />
 
 </LinearLayout>

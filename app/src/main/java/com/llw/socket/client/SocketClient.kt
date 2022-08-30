@@ -99,14 +99,13 @@ object SocketClient {
                 while (inputStream.read(buffer).also { len = it } != -1) {
                     receiveStr += String(buffer, 0, len, Charsets.UTF_8)
                     if (len < 1024) {
-                        callback.receiveServerMsg(receiveStr)
+                        socket.inetAddress.hostAddress?.let { callback.receiveServerMsg(it, receiveStr) }
                         receiveStr = ""
                     }
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
                 e.message?.let { Log.e("socket error", it) }
-                callback.receiveServerMsg( "")
             }
         }
     }

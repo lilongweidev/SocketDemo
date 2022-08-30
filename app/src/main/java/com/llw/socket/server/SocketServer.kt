@@ -95,8 +95,7 @@ object SocketServer {
         }
     }
 
-    class ServerThread(private val socket: Socket, private val callback: ServerCallback) :
-        Thread() {
+    class ServerThread(private val socket: Socket, private val callback: ServerCallback) : Thread() {
 
         override fun run() {
             val inputStream: InputStream?
@@ -111,14 +110,13 @@ object SocketServer {
                 while (inputStream.read(buffer).also { len = it } != -1) {
                     receiveStr += String(buffer, 0, len, Charsets.UTF_8)
                     if (len < 1024) {
-                        callback.receiveClientMsg(true, receiveStr)
+                        socket.inetAddress.hostAddress?.let { callback.receiveClientMsg(it, receiveStr) }
                         receiveStr = ""
                     }
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
                 e.message?.let { Log.e("socket error", it) }
-                callback.receiveClientMsg(false, "")
             }
         }
     }

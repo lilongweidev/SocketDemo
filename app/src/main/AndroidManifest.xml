@@ -19,14 +19,14 @@
         android:theme="@style/Theme.SocketDemo"
         tools:targetApi="31">
 
+        <activity android:name=".ui.ServerPlusActivity"
+            android:exported="false" />
+        <activity android:name=".ui.ClientPlusActivity"
+            android:exported="false" />
         <activity
-            android:name=".ui.ClientActivity"
+            android:name=".ui.BaseSocketActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".ui.ServerActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".ui.SelectTypeActivity"
             android:exported="true">

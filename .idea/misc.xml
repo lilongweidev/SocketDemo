@@ -14,6 +14,7 @@
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/drawable/shape_left_msg_bg.xml" value="0.1325" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/drawable/shape_right_msg_bg.xml" value="0.1325" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/drawable/vector_drawable_24gf_delete.xml" value="0.1395" />
+        <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/activity_base_socket.xml" value="0.14666666666666667" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/activity_client.xml" value="0.14666666666666667" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/activity_select_type.xml" value="0.14666666666666667" />
@@ -21,12 +22,13 @@
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/activity_socket.xml" value="0.12182971014492754" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/activity_test.xml" value="0.14666666666666667" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/bottom_sheet.xml" value="0.13541666666666666" />
-        <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/bottom_sheet_edit.xml" value="0.13179347826086957" />
+        <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/bottom_sheet_edit.xml" value="0.22" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/dialog.xml" value="0.13994565217391305" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/dialog_edit_ip.xml" value="0.22" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/dialog_emoji.xml" value="0.15625" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/item_emoji.xml" value="0.13405797101449277" />
         <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/item_rv_msg.xml" value="0.3333333333333333" />
+        <entry key="..\:/Android/AndroidStudioProjects/SocketDemo/app/src/main/res/layout/item_rv_msg_plus.xml" value="0.16666666666666666" />
       </map>
     </option>
   </component>

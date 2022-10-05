@@ -8,7 +8,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -102,7 +101,8 @@ open class BaseSocketActivity : BaseActivity(), ServerCallback, ClientCallback, 
      */
     private fun setTitle(
         mTitle: String, mSubtitle: String = "", funcTitle: String,
-        click: View.OnClickListener) {
+        click: View.OnClickListener
+    ) {
         binding.toolbar.apply {
             title = mTitle
             subtitle = mSubtitle
@@ -199,12 +199,16 @@ open class BaseSocketActivity : BaseActivity(), ServerCallback, ClientCallback, 
                 if (isShowEmoji) BottomSheetBehavior.STATE_COLLAPSED else BottomSheetBehavior.STATE_EXPANDED
         }
         //BottomSheet显示隐藏的相关处理
-        bottomSheetBehavior!!.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetBehavior!!.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 isShowEmoji = when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {//显示
                         binding.layBottomSheetEdit.ivEmoji.setImageDrawable(
-                            ContextCompat.getDrawable(this@BaseSocketActivity, R.drawable.ic_emoji_checked)
+                            ContextCompat.getDrawable(
+                                this@BaseSocketActivity,
+                                R.drawable.ic_emoji_checked
+                            )
                         )
                         true
                     }
@@ -218,7 +222,7 @@ open class BaseSocketActivity : BaseActivity(), ServerCallback, ClientCallback, 
                 }
             }
 
-            override fun onSlide(bottomSheet: View, slideOffset: Float){}
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
     }
 
